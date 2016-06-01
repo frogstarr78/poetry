@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>unknown</title>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+	</head>
+
+	<body style='padding: 7px;'>
+		<fieldset style="width:200px">
+			<legend>Options</legend>
+			<label>
+				Reading speed?
+				<div>
+					<input type="range" min=1 max=10 step=1 value=5 id="reading_speed" />
+				</div>
+			</label>
+		</fieldset>
+
+		<div id="line1">the sun shines</div>
+		<div id="line2" style='position: relative;'>over here a little more</div>
+		<div id='line3' style='margin-top: 20px;'>have you found your road to nowhere?</div>
+		<!--div id='line4'><span id='over' style='position: relative'>over</span> <span id='familiar'>familiar</span> pebbles n stains</div-->
+		<div id='line4'><span id='over' style='position: relative'>over</span><span id='space' style='display: inline;'>&nbsp;</span><span id='dash' style='display: none'>-</span><span id='familiar'>familiar</span> pebbles n stains</div>
+		<div id='line5'>consumed <span id='particle'>particles</span><span id='participle' style='display: none'>participle</span><span id='partial' style='display: none'>partial<span><span id='ly' style='display: none'>ly fled</span></div>
+
+		<div  style='margin-top: 20px;'>
+			<button id='again'>encore?</button>
+		</div>
+		<script>
+			var speed = $('#reading_speed').val() * 20;	
+
+			setTimeout(function () {
+				$('#line2').animate({right: '-=27'})
+				setTimeout(function () {
+					$('#space').fadeOut(speed);
+					$('#over').animate({right: '-=3'})
+				}, speed * 10)
+				setTimeout(function () {
+					$('#dash').fadeIn('slow');
+					//$('#over').animate({right: '-=3'})
+				}, speed * 2)
+				setTimeout(function () {
+					$('#particle').animate({width: '0%', opacity: 0.1});
+					$('#participle').animate({opacity: 1}).show();
+					setTimeout(function () {
+						$('#participle').animate({width: '0%', opacity: 0.1}).hide();
+						$('#partial').animate({opacity: 1}, 'slow').show();
+						setTimeout(function () {
+							$('#ly').fadeIn();
+						}, speed * 5);
+					}, speed * 20)
+				}, speed * 15)
+			}, speed * 20)
+
+			$('#again').click(function () {
+				location.reload();
+			});
+		</script>
+	</body>
+</html>
