@@ -2,7 +2,8 @@
 <html>
 	<head>
 		<title>unknown</title>
-		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="javascript/prototype.js"></script>
+		<script src="javascript/scriptaculous.js?load=effects" type="text/javascript"></script>
 	</head>
 
 	<body style='padding: 7px;'>
@@ -13,48 +14,166 @@
 				<div>
 					<input type="range" min=1 max=10 step=1 value=5 id="reading_speed" />
 				</div>
+				Fast.&nbsp;.&nbsp;.&nbsp;.&nbsp;.&nbsp;.&nbsp;.&nbsp;.&nbsp;.&nbsp;.Slow
 			</label>
 		</fieldset>
 
-		<div id="line1">the sun shines</div>
-		<div id="line2" style='position: relative;'>over here a little more</div>
-		<div id='line3' style='margin-top: 20px;'>have you found your road to nowhere?</div>
-		<!--div id='line4'><span id='over' style='position: relative'>over</span> <span id='familiar'>familiar</span> pebbles n stains</div-->
-		<div id='line4'><span id='over' style='position: relative'>over</span><span id='space' style='display: inline;'>&nbsp;</span><span id='dash' style='display: none'>-</span><span id='familiar'>familiar</span> pebbles n stains</div>
-		<div id='line5'>consumed <span id='particle'>particles</span><span id='participle' style='display: none'>participle</span><span id='partial' style='display: none'>partial<span><span id='ly' style='display: none'>ly fled</span></div>
+		<table>
+			<td>
+				<div id="line1">the sun shines</div>
+				<div id="line2" style='position: relative;'>over <span id='here'>here</span> a little more</div>
+				<div id='line3' style='margin-top: 20px;'>have you found your road to nowhere?</div>
+				<div id='line4'><span id='over' style='position: relative'>over</span><span id='space' style='display: inline;'>&nbsp;</span><span id='dash' style='display: none'>-</span><span id='familiar'>familiar</span> pebbles n stains</div>
+				<div id='line5'><span id='you' style='display: none'>you </span><span id='consumed'>consumed</span><span id='partially comma' style='display: none'>,</span> <span id='particle'>particles</span><span id='participle' style='display: none'>participles</span><span id='and' style='display: none'>and </span><span id='partial' style='display: none'>partial<span><span id='partials'>s</span><span id='ly' style='display: none'>ly <span id='fled'>fled</span><span id='fed' style='display: none'> fed</span></span></div>
+				<div id='line6'>announce<span id='announced' style='display: none'>d</span> the advertisement</div>
+				<div id='line7'>drunk</div>
+			</td>
+			<td>
+				<div id='fullilly' style='display: none'>
+					<div id="line01">the sun shines</div>
+					<div id="line02" style='position: relative; left: 27px;'>over <strong>here</strong> a little more</div>
+					<div id='line03' style='margin-top: 20px;'>have you found your road to nowhere?</div>
+					<div id='line04'>over familiar pebbles n stains</div>
+					<div id='line05'>over-familiar pebbles n stains</div>
+					<div id='line06' style='margin-left: 32px;'>consumed particles</div>
+					<div id='line07' style='margin-left: 32px;'>consumed participles</div>
+					<div id='line08' style='margin-left: 32px;'>consumed partials</div>
+					<div id='line09' style='margin-left: 32px;'>consumed, partially fled</div>
+					<div id='line10' style='margin-left: 32px;'>consumed and partially fed</div>
+					<div id='line11'>you</div>
+					<div id='line12'>you consumed</div>
+					<div id='line13'>you consumed partially</div>
+					<div id='line14'>announce the advertisement</div>
+					<div id='line15'>announced the advertisement</div>
+					<div id='line16'>drunk</div>
+				</div>
+			</td>
+		</table>
 
 		<div  style='margin-top: 20px;'>
-			<button id='again'>encore?</button>
+			<button id='play' onclick='play()'>play</button>
+			<button id='step' onclick='step()'>step by step</button>
+			<button id='again' onclick="location.href = location.href.split('?')[0] + '?reading_speed=' + $('reading_speed').getValue()">encore?</button>
+			<div>
+				<button id='all' onclick="new Effect.Appear('fullilly')">Just show me the whole thing.</button>
+			</div>
 		</div>
 		<script>
-			var speed = $('#reading_speed').val() * 20;	
+			var [url, params] = location.href.includes('?') ? location.href.split('?') : [location.href, 'reading_speed=5'];
+			$('reading_speed').setValue(params.split('=')[1]);
+			var speed = $('reading_speed').getValue() * 20;	
+			var wait = 20;
+			var current_step = 0;
+			var max_transitions = 11;
 
-			setTimeout(function () {
-				$('#line2').animate({right: '-=27'})
+			function transition1() {
+				new Effect.Move('line2', {x: 27});
+			}
+
+			function transition2() {
+				$('here').replace('<strong>here</strong>');
+			}
+
+			function transition3() {
+				new Effect.Shrink('space', {direction: 'top-left', duration: 0.8});
+				new Effect.Grow('dash', {direction: 'top-left'});
+			}
+
+			function transition4() {
+				new Effect.Shrink('particle', {direction: 'top-left'});
+				new Effect.Grow('participle', {direction: 'top-left'});
+			}
+
+			function transition5() {
+				new Effect.Shrink('participle', {direction: 'top-left'});
+				new Effect.Grow('partial', {direction: 'top-left'});
+			}
+
+			function transition6() {
+				new Effect.Shrink('partials', {direction: 'top-left'});
+				new Effect.Grow('partially comma', {direction: 'top-left'});
+				new Effect.Grow('ly', {direction: 'top-left'});
+			}
+
+			function transition7() {
+				new Effect.Shrink('partially comma', {direction: 'top-left'});
+				new Effect.Shrink('fled', {direction: 'top-left', duration: 0.5});
+				new Effect.Grow('and', {direction: 'top-left'});
+				new Effect.Grow('fed', {direction: 'top-left'});
+			}
+
+			function transition8() {
+				new Effect.Shrink('and', {direction: 'top-left'});
+				new Effect.Shrink('fed', {direction: 'top-left'});
+				new Effect.Shrink('partial', {direction: 'top-left'});
+				new Effect.Shrink('ly', {direction: 'top-left'});
+				new Effect.Shrink('consumed', {direction: 'top-left'});
+				new Effect.Grow('you', {direction: 'top-left'});
+			}
+
+			function transition9() {
+				new Effect.Grow('consumed', {direction: 'top-left'});
+			}
+
+			function transition10() {
+				new Effect.Grow('partial', {direction: 'top-left'});
+				new Effect.Grow('ly', {direction: 'top-left', duration: 0.5});
+			}
+
+			function transition11() {
+				new Effect.Grow('announced', {direction: 'top-left'});
+			}
+
+			function step() {
+				$('play').writeAttribute('disabled', 'disabled');
+				if ( current_step <= max_transitions - 1) {
+					current_step += 1;
+					window['transition' + current_step]();
+				} else {
+					$('step').writeAttribute('disabled', 'disabled');
+					alert('The poem is complete. Select the encore? button to start over.');
+				}
+			}
+
+			function play() {
+				$('play').writeAttribute('disabled', 'disabled');
+				$('step').writeAttribute('disabled', 'disabled');
+
 				setTimeout(function () {
-					$('#space').fadeOut(speed);
-					$('#over').animate({right: '-=3'})
-				}, speed * 10)
-				setTimeout(function () {
-					$('#dash').fadeIn('slow');
-					//$('#over').animate({right: '-=3'})
-				}, speed * 2)
-				setTimeout(function () {
-					$('#particle').animate({width: '0%', opacity: 0.1});
-					$('#participle').animate({opacity: 1}).show();
+					transition1()
+
 					setTimeout(function () {
-						$('#participle').animate({width: '0%', opacity: 0.1}).hide();
-						$('#partial').animate({opacity: 1}, 'slow').show();
+						transition2()
+					}, speed * 11);
+					setTimeout(function () {
+						transition3();
 						setTimeout(function () {
-							$('#ly').fadeIn();
-						}, speed * 5);
-					}, speed * 20)
-				}, speed * 15)
-			}, speed * 20)
-
-			$('#again').click(function () {
-				location.reload();
-			});
+							transition4()
+							setTimeout(function () {
+								transition5();
+								setTimeout(function () {
+									transition6();
+									setTimeout(function () {
+										transition7();
+										setTimeout(function () {
+											transition8();
+											setTimeout(function () {
+												transition9();
+												setTimeout(function () {
+													transition10();
+													setTimeout(function () {
+														transition11();
+													}, speed * wait);
+												}, speed * wait);
+											}, speed * wait);
+										}, speed * wait);
+									}, speed * wait);
+								}, speed * wait);
+							}, speed * wait);
+						}, speed * (wait - 5));
+					}, speed * wait);
+				}, speed * wait);
+			}
 		</script>
 	</body>
 </html>
